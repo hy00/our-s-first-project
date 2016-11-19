@@ -6,7 +6,6 @@
 		<style>
 			#canvas{
 				display: block;
-				margin: 0 auto;
 			}
 			
 		</style>
@@ -19,15 +18,15 @@
 			var canvas = document.getElementById('canvas');
 			var cxt = canvas.getContext('2d');
 			
-			var W = 400,H = 400;
-			var L = 40,T = 40;//第一个小球圆心的位置
-			var R = 20;
-			var rows = 2,cells = 1;//设置页面中有两行小球，每一行有3个，自适应接口
+			var W = window.innerWidth,H = window.innerHeight;
+			var L = 120,T = 120;//第一个小球圆心的位置
+			var R = 90, disRx = 40, disRy = 60;
+			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
 			
 			var defineArr = [];//存放页面中每一个小球的属性
 			canvas.width = W;
 			canvas.height = H;
-			canvas.style.border = '1px solid red';
+//			canvas.style.border = '1px solid red';
 //			var colorArr = ['red','green','yellow'];
 			
 			///////////////////////////////////////////////////
@@ -42,8 +41,8 @@
 				for(var i = 0; i < rows ; i++ ){
 					for(var j = 0;j< cells ;j++){
 						var ball = {
-							x: x + 2*j*(R + 10),
-							y: y + 2*i*(R + 10),
+							x: x + 2*j*(R + disRx),
+							y: y + 2*i*(R + disRy),
 							vx:0,
 							vy:10,
 							g:2,
@@ -62,7 +61,7 @@
 				for(var i=0; i < rows;i++){
 					for(var j=0;j<cells;j++){
 						cxt.beginPath();
-						cxt.arc(x + 2*j*(R + 10),y + 2*i*(R + 10),R,0,2*Math.PI);
+						cxt.arc(x + 2*j*(R + disRx),y + 2*i*(R + disRy),R,0,2*Math.PI);
 						cxt.fill();
 					}
 				}
