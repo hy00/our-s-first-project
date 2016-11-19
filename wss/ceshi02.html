@@ -20,7 +20,7 @@
 			
 			var W = window.innerWidth,H = window.innerHeight;
 			var L = 120,T = 120;//第一个小球圆心的位置
-			var R = 90, disRx = 30, disRy = 60;
+			var R = 60, disRx = 30, disRy = 60;
 			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
 			
 			var defineArr = [];//存放页面中每一个小球的属性
@@ -92,11 +92,18 @@
 					defineArr[i].vy += defineArr[i].g;
 					
 					if(defineArr[i+cells] && (defineArr[i].y + R) >= (defineArr[i+cells].y - R)){
-						defineArr[i].x += 4;
+						defineArr[i].x += defineArr[i].vx;
+						defineArr[i].vx += 10;
+						
 						defineArr[i].y = defineArr[i+cells].y - 2*R;
-						defineArr[i].vy = defineArr[i].vy*0.2;
-						defineArr[i+cells].y += 4;
-						defineArr[i+cells].x += defineArr[i].x*0.8;
+						defineArr[i+cells].vy = defineArr[i].vy*0.8;
+						defineArr[i].vy = -defineArr[i].vy*0.8;
+						
+						defineArr[i+cells].y += defineArr[i+cells].vy;
+						
+						
+						defineArr[i+cells].x += -defineArr[i+cells].vx;
+						defineArr[i+cells].vx = defineArr[i].vx;
 					}
 //				}
 			}
