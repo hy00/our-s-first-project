@@ -20,7 +20,7 @@
 			
 			var W = window.innerWidth,H = window.innerHeight;
 			var L = 120,T = 120;//第一个小球圆心的位置
-			var R = 90, disRx = 40, disRy = 60;
+			var R = 90, disRx = 30, disRy = 60;
 			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
 			
 			var defineArr = [];//存放页面中每一个小球的属性
@@ -44,9 +44,9 @@
 							x: x + 2*j*(R + disRx),
 							y: y + 2*i*(R + disRy),
 							vx:0,
-							vy:10,
+							vy:20,
 							g:2,
-							time:parseInt(Math.random()*2000)
+							time:parseInt(Math.random()*100 + 1000)
 						}
 						defineArr.push(ball);
 					}
@@ -71,17 +71,23 @@
 			
 			//小球运动
 			function roundMAll () { 
-		 		setInterval(function(){
-		 			cxt.clearRect(0, 0, cxt.canvas.width, cxt.canvas.height);
-		 			drawMove(cxt);
-		 			roundMove();
-		 		},100);
+				for(var i = 0;i<cells;i++){
+					(function(index){
+						setTimeout(function(){
+							setInterval(function(){
+					 			cxt.clearRect(0, 0, cxt.canvas.width, cxt.canvas.height);
+					 			drawMove(cxt);
+					 			roundMove(index);
+					 		},30);
+						},defineArr[index].time);
+					})(i)
+				}
 			}
 			
 			
 			
-			function roundMove () {
-			    for(var i = 0; i < cells ; i++ ){ //只有第一行主动下落，即第一行的cells个小球
+			function roundMove (i) {
+//			    for(var i = 0; i < cells ; i++ ){ //只有第一行主动下落，即第一行的cells个小球
 					defineArr[i].y += defineArr[i].vy;
 					defineArr[i].vy += defineArr[i].g;
 					
@@ -92,8 +98,7 @@
 						defineArr[i+cells].y += 4;
 						defineArr[i+cells].x += defineArr[i].x*0.8;
 					}
-				}
-			    
+//				}
 			}
 			
 			
