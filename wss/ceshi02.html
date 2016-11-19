@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#canvas{
+				display: block;
+				margin: 0 auto;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script>	
+			/*小球下落(假设布局是固定的)*/
+			/////////////////////////////////////////////
+			var canvas = document.getElementById('canvas');
+			var cxt = canvas.getContext('2d');
+			
+			var W = 400,H = 400;
+			var L = 40,T = 40;//第一个小球圆心的位置
+			var R = 20;
+			var rows = 2,cells = 1;//设置页面中有两行小球，每一行有3个，自适应接口
+			
+			var defineArr = [];//存放页面中每一个小球的属性
+			canvas.width = W;
+			canvas.height = H;
+			canvas.style.border = '1px solid red';
+//			var colorArr = ['red','green','yellow'];
+			
+			///////////////////////////////////////////////////
+			drawRound(L,T,cxt);
+			defineAttr(L,T,rows,cells);
+			document.addEventListener('click',roundMAll);
+			
+			
+			////////////////////////////
+			//初始化小球的各项指标
+			function defineAttr(x,y,rows,cells){
+				for(var i = 0; i < rows ; i++ ){
+					for(var j = 0;j< cells ;j++){
+						var ball = {
+							x: x + 2*j*(R + 10),
+							y: y + 2*i*(R + 10),
+							vx:0,
+							vy:10,
+							g:2,
+							time:parseInt(Math.random()*2000)
+						}
+						defineArr.push(ball);
+					}
+				}
+			}
+			
+			
+			//绘制小球
+			function drawRound(x,y,cxt){
+//				cxt.save();
+				cxt.fillStyle = 'red';
+				for(var i=0; i < rows;i++){
+					for(var j=0;j<cells;j++){
+						cxt.beginPath();
+						cxt.arc(x + 2*j*(R + 10),y + 2*i*(R + 10),R,0,2*Math.PI);
+						cxt.fill();
+					}
+				}
+//				cxt.restore();
+			}
+			
+			
+			//小球运动
+			function roundMAll () { 
+		 		setInterval(function(){
+		 			cxt.clearRect(0, 0, cxt.canvas.width, cxt.canvas.height);
+		 			drawMove(cxt);
+		 			roundMove();
+		 		},100);
+			}
+			
+			
+			
+			function roundMove () {
+			    for(var i = 0; i < cells ; i++ ){ //只有第一行主动下落，即第一行的cells个小球
+					defineArr[i].y += defineArr[i].vy;
+					defineArr[i].vy += defineArr[i].g;
+					
+					if(defineArr[i+cells] && (defineArr[i].y + R) >= (defineArr[i+cells].y - R)){
+						defineArr[i].x += 4;
+						defineArr[i].y = defineArr[i+cells].y - 2*R;
+						defineArr[i].vy = defineArr[i].vy*0.2;
+						defineArr[i+cells].y += 4;
+						defineArr[i+cells].x += defineArr[i].x*0.8;
+					}
+				}
+			    
+			}
+			
+			
+			function drawMove(cxt) {//绘制运动后的小球
+				cxt.fillStyle = 'green';
+			    for(var i = 0;i<defineArr.length;i++){
+			    	cxt.beginPath();
+			    	cxt.arc(defineArr[i].x, defineArr[i].y, R, 0, 2*Math.PI);
+			    	cxt.fill();
+			    }
+			}
+			
+		</script>
+	</body>
+</html>

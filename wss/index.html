@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<script>
+	(function () {
+		/*
+			一个小球变化需求
+				首先是进场，从随机弧度位置画一段随机长度的圆弧
+				旋转一个角度
+				圆弧的长度变化
+				
+		*/
+		/*声明变量*/
+		var canvas = document.getElementById('canvas');
+		var cxt = canvas.getContext('2d');
+		var W = 400,H = 400;
+		canvas.width = W;
+		canvas.height = H;
+		canvas.style.border = '1px solid red';
+		var colorArr = ['red','green','yellow'];
+		var timer = 0;
+		var newRed = 10;//初始角度
+		var inet = 10;//每次弧度的变化
+		var bdeg = 10;
+		var color = colorArr[Math.round(Math.random()*(colorArr.length-1))];//初始的颜色
+		/*调用*/
+		
+		timer = setInterval(function(){
+			cxt.clearRect(0,0,canvas.width,canvas.height);
+			gitArc (cxt);
+			if(newRed > 270){
+				clearInterval(timer);
+				function(){
+					console.log(1);
+				}
+			}
+		},30);
+		
+		/*绘制圆弧*/
+		function gitArc (cxt) {
+		   	cxt.save();
+			cxt.translate(W/2,H/2);
+			cxt.lineWidth = 4;
+			cxt.beginPath();
+			cxt.strokeStyle = color;
+			cxt.rotate(bdeg);
+			cxt.arc(0,0,100,0,newRed*Math.PI/180);
+			cxt.stroke();
+			cxt.restore();
+		}
+		
+		
+		/**/
+	})()
+	</script>
+</body>
+</html>
