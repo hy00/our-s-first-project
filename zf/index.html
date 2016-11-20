@@ -1,0 +1,95 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="css/index.css"/>
+</head>
+
+<body>
+	<section class="zf_wrap">
+		<header class="zf_header clearfix">
+			<h2 class="zf_h2">
+				<img src="img/logo.png" />
+				<span>Booounce</span>
+			</h2>
+			<nav class="zf_nav">
+				<a href="#">Motions</a>
+				<a href="#" class="active">Submit</a>
+				<a href="#">About</a>
+				<a href="#" class="zf_sou zf_h">
+					<img src="img/sou.png" class="shakeimage"/>
+				</a>
+				<a href="#" class="zf_wen zf_h">
+					<img src="img/wen.png" class="shakeimage"/>
+				</a>
+			</nav>
+		</header>
+		<div class="zf_ok clearfix">
+			<input type="text" placeholder="Please input the name of the programmer..."/>
+			<div class="zf_btn">
+				<span>ok</span>
+			</div>
+			<p class="zf_ok_p">Click get prompt information</p>
+		</div>
+	</section>
+</body>
+<script type="text/javascript">
+	(function(){
+		var hd = document.querySelectorAll(".zf_h");
+		var hda = document.querySelectorAll(".shakeimage");
+		var zf_btn = document.querySelector(".zf_btn")
+		var l = hda[0].offsetLeft;
+		var t = hda[1].offsetTop;
+		var rector=3
+		var stopit=0 
+		var a=1
+		function init(which){
+			stopit=0
+			shake=which
+			which.style.left=l + "px";
+			which.style.top= t + "px";
+		}
+		function stoprattle(which){
+			stopit=1
+			which.style.left=l + "px";
+			which.style.top= t + "px";
+		}
+		function rattle(){
+			if (stopit==1){
+				return
+			}
+			if (a==1){
+				//shake.style.top=parseInt(shake.style.top)+rector
+			}
+			else if (a==2){
+				shake.style.left=parseInt(shake.style.left)+rector
+			}
+			else if (a==3){
+				//shake.style.top=parseInt(shake.style.top)-rector
+			}
+			else{
+				shake.style.left=parseInt(shake.style.left)-rector
+			}
+			if (a<4)
+				a++
+				else
+				a=1
+				setTimeout("rattle()",50)
+		}
+		for (var i = 0; i < hd.length; i++) {
+			hd[i].index = i;
+			hd[i].onmouseover = function(){
+				init(hda[this.index]);
+				rattle();
+			}
+			hd[i].onmouseout = function(){
+				stoprattle(hda[this.index]);
+			}
+		}
+		
+	})()
+</script>
+<!--<script type="text/javascript" src="js/shake_1.js"></script>-->
+<!--<script type="text/javascript" src="js/miaov.js"></script>-->
+</html>

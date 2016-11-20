@@ -1,0 +1,145 @@
+﻿@charset="utf-8";
+* {
+	font-family: arial;
+}
+body,
+h2,
+p {
+	margin: 0;
+}
+a {
+	text-decoration: none;
+}
+input {
+	border: none;
+	margin: 0;
+	padding: 0;
+	background: none;
+	outline: none;
+}
+img {
+	border: none;
+	vertical-align: top;
+}
+.clearfix:after {
+	content:"";
+	display:block;
+	clear:both;
+}
+body {
+	background: #d61e30;
+}
+.zf_wrap {
+	position: relative;
+	width: 1180px;
+	height: 750px;
+	margin: 0 auto;
+}
+.zf_header {
+	position: relative;
+	width: 1180px;
+	height: 106px;
+	line-height: 106px;
+	margin: 0 auto;
+}
+.zf_h2 {
+	float: left;
+}
+.zf_h2 span {
+	font-size: 16px;
+}
+.zf_h2 img {
+	position: absolute;
+	left: 0;
+	top: 29px;
+	width: 40px;
+	height: 38px;
+}
+.zf_h2 span {
+	margin-left: 55px;
+}
+.zf_nav {
+	position: relative;
+	float: right;
+	padding-right: 95px;
+}
+.zf_nav a {
+	font-size: 14px;
+	font-weight: 700;
+	color: black;
+	margin: 0 10px;
+}
+.zf_sou {
+	position: absolute;
+	right: 42px;
+	top: 38px;
+	width: 30px;
+	height: 30px;
+	background: black;
+	border-radius: 50%;	
+}
+.zf_wen {
+	position: absolute;
+	right: 0;
+	top: 38px;
+	width: 30px;
+	height: 30px;
+	background: black;
+	border-radius: 50%;	
+}
+.zf_sou img {
+	width: 12px;
+	position: absolute;
+	left: 9px;
+	top: 9px;
+}
+.zf_wen img {
+	width: 8px;
+	position: absolute;
+	left: 11px;
+	top: 9px;
+}
+.zf_ok {
+	position: absolute;
+	left: 187px;
+	top: 329px;
+	width: 820px;
+	height: 125px;
+}
+.zf_ok input {
+	float: left;
+	width: 650px;
+	height: 80px;
+	background: #fff;
+	border-radius: 40px;
+	font: 28px/80px arial;
+	color: black;
+	padding-left: 40px;
+}
+.zf_btn {
+	float: right;
+	width: 80px;
+	height: 80px;
+	line-height: 80px;
+	text-align: center;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	cursor: pointer;
+}
+.zf_btn span {
+	font: 28px/80px arial;
+	color: #fff;
+}
+.zf_ok_p {
+	width: 300px;
+	margin: 100px auto;
+	cursor: pointer;
+	font: 18px/1 "微软雅黑";
+	color: gold;
+}
+.zf_nav .active {
+	color: #eeebec;
+}
+.shakeimage {
+	position: relative;
+}
