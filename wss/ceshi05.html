@@ -16,45 +16,53 @@
   				
 
 				//随机0-360
-				var n = Math.floor(Math.random()*360);
-				var m = Math.floor(Math.random()*360);
+				
   				var deg = Math.PI/180;
   				var r = 80;
   				var onOff = true;
-  				var ringArr = {
-  					x : 250,
-  					y : 250,
-  					startDeg : n,
-  					endDeg : m,
-  					direction : false,//默认顺时针
-  					dixDeg : 10,
-  					changeDeg : 90,
-  					max : 350,
-  					min : 40,
-  					color : 'red',
-  					mode : 1
-  				};
-
-				startAdd (ringArr,cxt);
+  				var arr = [];
+				var color = ['rgba(255, 0, 0, 0.8)','rgba(153, 0, 204, 0.6)','rgba(51, 51, 204, 0.4)'];
+				
+				for(var i = 0;i < 3; i++){
+					var n = Math.floor(Math.random()*360);
+					var m = Math.floor(Math.random()*360);
+					var ringArr = {
+	  					x : 250,
+	  					y : 250,
+	  					startDeg : n,
+	  					endDeg : m,
+	  					direction : false,//默认顺时针
+	  					dixDeg : 10,
+	  					changeDeg : 90,
+	  					max : 350,
+	  					min : 40,
+	  					color : color[i],
+	  					mode : 1
+	  				};
+	  				arr.push(ringArr);
+				}
+				
+				
+				arr.forEach(function(item){
+					startAdd (item,cxt);
+				})
+				
   				
   				function go () {
   					if(onOff){
-  						var num = Math.ceil(Math.random()*4);
+  						var num = Math.floor(Math.random()*4);
 						switch(num){
 							case 1 :
-								startAdd();
+								bothAdd(ringArr,cxt);
 								break;
 							case 2 :
-								bothAdd();
+								bothRedcue(ringArr,cxt);
 								break;
 							case 3 :
-								bothRedcue();
+								startRotact(ringArr,cxt);
 								break;
 							case 4 :
-								startRotact();
-								break;
-							case 5 :
-								endRotact();
+								endRotact(ringArr,cxt);
 								break;	
 						}
   					}
@@ -64,66 +72,83 @@
 				
   				
   				function startAdd (obj,cxt) {
+  					clearInterval(obj.stimer);
+  					obj.oldDeg = obj.endDeg;
+  					obj.endDeg = 0;
   					obj.stimer = setInterval(function(){
-  						obj.startDeg += obj.dixDeg;
-  						if(obj.startDeg == obj.endDeg){
+  						cxt.clearRect(0,0,500,500);
+  						obj.endDeg += obj.dixDeg;
+  						if(obj.endDeg >= obj.oldDeg){
   							clearInterval(obj.stimer);
 							go ();
   						}
   						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg, obj.direction);
-  					},30);
+  					},50);
   				}
   				
-  				function bothAdd(obj) {
+  				function bothAdd(obj,cxt) {
+  					clearInterval(obj.btimer);
   				    obj.btimer = setInterval(function(){
+  				    	cxt.clearRect(0,0,500,500);
   						obj.startDeg -= obj.dixDeg;
   						obj.endDeg += obj.dixDeg;
   						if(obj.endDeg - obj.startDeg >= obj.max){
   							clearInterval(obj.btimer);
+  							go ();
   						}
   						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
-  					},30);
+  					},50);
   				}
   				
-  				function bothRedcue(obj) {
+  				function bothRedcue(obj,cxt) {
+  					clearInterval(obj.bRtimer);
   				    obj.bRtimer = setInterval(function(){
+  				    	cxt.clearRect(0,0,500,500);
   						obj.startDeg += obj.dixDeg;
   						obj.endDeg -= obj.dixDeg;
   						if(obj.endDeg - obj.startDeg <= obj.min){
   							clearInterval(obj.bRtimer);
+  							go ();
   						}
   						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
-  					},30);
+  					},50);
   				}
   				
-  				function startRotact(obj) {//顺时针
+  				function startRotact(obj,cxt) {//顺时针
+  					clearInterval(obj.sRtimer);
   					obj.oldDeg = obj.endDeg;
   				    obj.sRtimer = setInterval(function(){
+  				    	cxt.clearRect(0,0,500,500);
   						obj.startDeg += obj.dixDeg;
   						obj.endDeg += obj.dixDeg;
   						if(obj.endDeg - obj.oldDeg > obj.changeDeg){
   							clearInterval(obj.sRtimer);
   							obj.oldDeg =null;
+  							go ();
   						}
   						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
-  					},30);
+  					},50);
   				}
   				
-  				function endRotact(obj) {//逆时针
+  				function endRotact(obj,cxt) {//逆时针
+  					
+  					clearInterval(obj.sRtimer);
   					obj.oldDeg = obj.startDeg;
   				    obj.sRtimer = setInterval(function(){
+  				    	cxt.clearRect(0,0,500,500);
   						obj.startDeg -= obj.dixDeg;
   						obj.endDeg -= obj.dixDeg;
   						if(obj.startDeg - obj.oldDeg > obj.changeDeg){
   							clearInterval(obj.sRtimer);
   							obj.oldDeg =null;
+  							go ();
   						}
   						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
-  					},30);
+  					},50);
   				}
   				
                 function drawRing(cxt,x,y,r,color,start,end,falog) {
-                	cxt.clearRect(0,0,500,500);
+                	
 					cxt.save();
 					cxt.beginPath();
 					cxt.strokeStyle = color;
