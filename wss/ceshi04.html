@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500" height="500"></canvas>
+
+		<script>
+		
+			var canvas = document.getElementById('canvas');
+			var cxt = canvas.getContext('2d');
+			var W = window.innerWidth,H = window.innerHeight;
+			var L = 120,T = 120;//第一个小球圆心的位置
+			var R = 60, disRx = 30, disRy = 60;
+			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
+			
+			var defineArr = [];//存放页面中每一个小球的属性
+			canvas.width = W;
+			canvas.height = H;
+			var arrImg = [];
+			
+			for(var i=0; i < rows;i++){
+				for(var j=0;j<cells;j++){
+					(function(oI, oJ) {
+						var images = new Image();
+						images.src = 't18.png';
+						images.onload = function(){
+
+							drawRound(L,T,cxt,oI,oJ,images);
+						}	
+					})(i, j)
+					
+				}
+			}		
+			
+			
+			
+			
+			
+//			drawRound(L,T,cxt)
+			function drawRound(x,y,context,i,j,images){
+			
+				cxt.beginPath();
+				var pattern = cxt.createPattern(images,'no-repeat');
+				cxt.arc(x + 2*j*(R + disRx), y + 2*i*(R + disRy),R,0,2*Math.PI);
+				cxt.fillStyle = pattern;
+				cxt.fill();
+
+
+			/* context.save();    
+			        // context.rotate(10*Math.PI/180);   
+			         context.drawImage(images, x + 2*j*(R + disRx), y + 2*i*(R + disRy),R, R);                      
+			         context.restore();  
+			}*/
+                
+		</script>
+	</body>
+</html>

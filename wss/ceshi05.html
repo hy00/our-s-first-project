@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500" height="500"></canvas>
+
+		<script>
+		
+				var cxt = document.getElementById('canvas').getContext('2d');  
+                //弧度  
+                var deg = Math.PI/180;  
+  				
+  				
+
+				//随机0-360
+				var n = Math.floor(Math.random()*360);
+				var m = Math.floor(Math.random()*360);
+  				var deg = Math.PI/180;
+  				var r = 80;
+  				var onOff = true;
+  				var ringArr = {
+  					x : 250,
+  					y : 250,
+  					startDeg : n,
+  					endDeg : m,
+  					direction : false,//默认顺时针
+  					dixDeg : 10,
+  					changeDeg : 90,
+  					max : 350,
+  					min : 40,
+  					color : 'red',
+  					mode : 1
+  				};
+
+				startAdd (ringArr,cxt);
+  				
+  				function go () {
+  					if(onOff){
+  						var num = Math.ceil(Math.random()*4);
+						switch(num){
+							case 1 :
+								startAdd();
+								break;
+							case 2 :
+								bothAdd();
+								break;
+							case 3 :
+								bothRedcue();
+								break;
+							case 4 :
+								startRotact();
+								break;
+							case 5 :
+								endRotact();
+								break;	
+						}
+  					}
+  				}
+  				
+  				
+				
+  				
+  				function startAdd (obj,cxt) {
+  					obj.stimer = setInterval(function(){
+  						obj.startDeg += obj.dixDeg;
+  						if(obj.startDeg == obj.endDeg){
+  							clearInterval(obj.stimer);
+							go ();
+  						}
+  						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg, obj.direction);
+  					},30);
+  				}
+  				
+  				function bothAdd(obj) {
+  				    obj.btimer = setInterval(function(){
+  						obj.startDeg -= obj.dixDeg;
+  						obj.endDeg += obj.dixDeg;
+  						if(obj.endDeg - obj.startDeg >= obj.max){
+  							clearInterval(obj.btimer);
+  						}
+  						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
+  					},30);
+  				}
+  				
+  				function bothRedcue(obj) {
+  				    obj.bRtimer = setInterval(function(){
+  						obj.startDeg += obj.dixDeg;
+  						obj.endDeg -= obj.dixDeg;
+  						if(obj.endDeg - obj.startDeg <= obj.min){
+  							clearInterval(obj.bRtimer);
+  						}
+  						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
+  					},30);
+  				}
+  				
+  				function startRotact(obj) {//顺时针
+  					obj.oldDeg = obj.endDeg;
+  				    obj.sRtimer = setInterval(function(){
+  						obj.startDeg += obj.dixDeg;
+  						obj.endDeg += obj.dixDeg;
+  						if(obj.endDeg - obj.oldDeg > obj.changeDeg){
+  							clearInterval(obj.sRtimer);
+  							obj.oldDeg =null;
+  						}
+  						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
+  					},30);
+  				}
+  				
+  				function endRotact(obj) {//逆时针
+  					obj.oldDeg = obj.startDeg;
+  				    obj.sRtimer = setInterval(function(){
+  						obj.startDeg -= obj.dixDeg;
+  						obj.endDeg -= obj.dixDeg;
+  						if(obj.startDeg - obj.oldDeg > obj.changeDeg){
+  							clearInterval(obj.sRtimer);
+  							obj.oldDeg =null;
+  						}
+  						drawRing(cxt, obj.x, obj.y, r, obj.color, obj.startDeg, obj.endDeg,obj.direction);
+  					},30);
+  				}
+  				
+                function drawRing(cxt,x,y,r,color,start,end,falog) {
+                	cxt.clearRect(0,0,500,500);
+					cxt.save();
+					cxt.beginPath();
+					cxt.strokeStyle = color;
+					cxt.lineWidth = 6;
+					cxt.arc(x,y,r,start*deg,end*deg,falog);
+					cxt.stroke();
+//					cxt.closePath();
+//					cxt.restore();
+				}
+
+				
+		</script>
+	</body>
+</html>
