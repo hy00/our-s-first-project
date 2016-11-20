@@ -132,6 +132,7 @@
 			var zoom = 1;
 			var num2 = 100;
 			getAll();
+			
 			function getAll(){
 				for(var i = 0;i < defineArr.length;i++){
 					(function (index) {
@@ -154,11 +155,11 @@
 					num2 += zoom;
 					cxt.beginPath();
 					cxt.scale(num2/100, num2/100);
-					cxt.translate(-defineArr[num].x, -defineArr[num].y);
+//					cxt.translate(-defineArr[num].x, -defineArr[num].y);
 			    	cxt.arc(0, 0, R, 0, 2*Math.PI);
 			    	cxt.closePath();
 			    	cxt.fill();
-			    	cxt.restore();
+//			    	cxt.restore();
 			    	if(num2 <= 100){
 			    		clearInterval(timer2);
 			    	}
