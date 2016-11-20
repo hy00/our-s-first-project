@@ -46,9 +46,9 @@
 							x: x + 2*j*(R + disRx),
 							y: y + 2*i*(R + disRy),
 							vx:0,
-							vy:20,
+							vy:parseInt(Math.random()*20 + 10),
 							g:2,
-							time:parseInt(Math.random()*100 + 1000)
+							time:parseInt(Math.random()*100 + 500)
 						}
 						if(i>0){
 							ball.vy =0;
@@ -95,24 +95,20 @@
 //			    for(var i = 0; i < cells ; i++ ){ //只有第一行主动下落，即第一行的cells个小球
 					defineArr[i].y += defineArr[i].vy;
 					defineArr[i].vy += defineArr[i].g;
+					defineArr[i].x += defineArr[i].vx;
 					
-//					defineArr[i+cells].vy = 0;
+
 					defineArr[i+cells].y += defineArr[i+cells].vy;
 					defineArr[i+cells].vy += defineArr[i+cells].g;
+					defineArr[i+cells].x += defineArr[i+cells].vx;
 					
 					if(defineArr[i+cells] && (defineArr[i].y + R) >= (defineArr[i+cells].y - R)){
-						defineArr[i].x += defineArr[i].vx;
-						defineArr[i].vx += 10;
+						defineArr[i].vx  = Math.pow(-1,Math.ceil(Math.random() * 1000)) * 2;
+						defineArr[i+cells].vy = defineArr[i].vy*1.2;
+						defineArr[i].vy = -defineArr[i].vy*0.1;
+						defineArr[i].y += defineArr[i].vy;
 						
-						defineArr[i].y = defineArr[i+cells].y - 2*R;
-						defineArr[i+cells].vy = defineArr[i].vy*1.6;
-						defineArr[i].vy = -defineArr[i].vy*0.8;
-						
-						defineArr[i+cells].y += defineArr[i+cells].vy;
-						defineArr[i+cells].vy  += defineArr[i+cells].g;
-						
-						defineArr[i+cells].x += -defineArr[i+cells].vx;
-						defineArr[i+cells].vx = defineArr[i].vx*0.8;
+						defineArr[i+cells].vx = -defineArr[i].vx*1.8;
 					}
 //				}
 			}
