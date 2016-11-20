@@ -143,8 +143,9 @@
 			}	
 			function small(num){
 				timer2 = setInterval(function(){
-					cxt.save();
+					
 					cxt.clearRect(defineArr[num].x - R, defineArr[num].y - R, defineArr[num].x + R, defineArr[num].y + R);
+					cxt.save();
 					cxt.translate(defineArr[num].x, defineArr[num].y);
 					
 					if(num2 == 120){
@@ -153,6 +154,7 @@
 					num2 += zoom;
 					cxt.beginPath();
 					cxt.scale(num2/100, num2/100);
+					cxt.translate(-defineArr[num].x, -defineArr[num].y);
 			    	cxt.arc(0, 0, R, 0, 2*Math.PI);
 			    	cxt.closePath();
 			    	cxt.fill();
