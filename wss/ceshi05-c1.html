@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500" height="500"></canvas>
+
+		<script>
+		
+				/////////////////////////////////////////////
+			var canvas = document.getElementById('canvas');
+			var cxt = canvas.getContext('2d');
+			
+			var W = window.innerWidth,H = window.innerHeight;
+			var L = 120,T = 120;//第一个小球圆心的位置
+			var R = 60, disRx = 30, disRy = 60;
+			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
+			var deg = Math.PI/180;
+			var onOff = true;
+			var defineArr = [];
+			var color = ['red','green','blue'];
+			canvas.width = W;
+			canvas.height = H;
+			defineAttr(L,T,rows,cells);
+			function defineAttr(x,y,rows,cells){
+				for(var i = 0; i < rows ; i++ ){
+					for(var j = 0;j< cells ;j++){
+						var ball = {
+							x: x + 2*j*(R + disRx),
+							y: y + 2*i*(R + disRy),
+							vx:0,
+							vy:20,
+							g:2,
+							r:R,
+							time:parseInt(Math.random()*100 + 1000),
+							min:10,//最小度数
+							max:300
+						}
+						if(i>0){
+							ball.vy =0;
+						}
+						defineArr.push(ball);
+					}
+				}
+			}
+
+			for(var i = 0;i < defineArr.length;i++){
+				all (defineArr[i]);
+			}
+			
+			
+  				
+  				
+            function drawRing(cxt,obj,val,num) {
+        		cxt.clearRect(obj.x - (obj.r+4), obj.y - (obj.r+4), 2*(obj.r+4), 2*(obj.r+4));
+				cxt.save();
+            	for(var i = 0; i < 3;i++){ 
+					cxt.beginPath();
+					cxt.strokeStyle = color[i];
+					cxt.lineWidth = 4;
+					switch(num){
+						case 0 :
+							if(i >= 1){
+								min = obj.min;
+								max = val.min*3/5;
+							}else{
+								min = obj.min;
+								max = val.min;
+							};
+							break;
+						case 1 :
+							if(i >= 1){
+								min = min*3/5;
+								max = max*3/5;
+							}
+							min = val.min;
+							max = val.max;
+							break;
+					}
+					
+					cxt.arc(obj.x, obj.y, obj.r-i*6, min*deg, max*deg);
+					obj.min = min;
+					obj.max = max;
+					cxt.stroke();
+					cxt.closePath();
+            	}	
+				cxt.restore();
+			}
+
+			
+				
+				
+			function all (obj) {
+				var min = 0,max = 0;
+				wss_mTween(obj,{min:300},500,0,function(){
+					setTimeout(function(){
+						go();
+					},100);
+				});
+				
+				function go () {
+					if(onOff){
+						var num = Math.ceil(Math.random()*3);
+						switch(num){
+							case 1 ://缩小
+								wss_mTween(obj,{min:min+40,max:max-100},500,1,function(){
+									setTimeout(function(){
+										go();
+									},100);
+								});
+								break;
+							case 2 ://放大
+								wss_mTween(obj,{min:min-140,max:max+140},500,1,function(){
+									setTimeout(function(){
+										go();
+									},100);
+								});
+								break;
+							case 3 ://顺时针转
+								wss_mTween(obj,{min:min+90,max:max+90},500,1,function(){
+									setTimeout(function(){
+										go();
+									},100);
+								});
+								break;
+							case 4 :
+								wss_mTween(obj,{min:min-90,max:max-90},500,1,function(){
+									setTimeout(function(){
+										go();
+									},100);
+								});
+								break;	
+						}
+					}
+				}
+			}
+			
+			
+			
+			
+			function linear(t, b, c, d){
+				return c*t/d + b;
+			}
+			
+			
+				
+			function wss_mTween(el,target,time, num, callBack) {
+				clearInterval(el.timer);
+				var t = 0;
+				var b = {}; 
+				var c = {}; 	
+				var d = time/20; 
+				for(var s in target) {
+					b[s] = el[s];  
+					c[s] = target[s] - b[s];
+				}
+				el.timer = setInterval(function(){
+					t++;
+					if(t>d) {
+						clearInterval(el.timer);
+						callBack&&callBack(); 
+					} else {
+						var val = {};
+						for(var s in target) {
+							val[s] = linear(t,b[s],c[s],d);
+						}
+						drawRing(cxt, el, val, num);
+					}
+				},20);
+			}	
+		</script>
+	</body>
+</html>

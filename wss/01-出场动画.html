@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		body{ margin:0; }
+			#canvas{
+				display: block;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script>	
+			
+			/////////////////////////////////////////////
+			var canvas = document.getElementById('canvas');
+			var cxt = canvas.getContext('2d');
+			
+			var W = window.innerWidth,H = window.innerHeight;
+			var L = 120,T = 120;//第一个小球圆心的位置
+			var R = 60, disRx = 30, disRy = 60;
+			var rows = 2,cells = 5;//设置页面中有两行小球，每一行有3个，自适应接口
+//			var num = 0;
+			
+			var defineArr = [];
+			canvas.width = W;
+			canvas.height = H;
+			defineAttr(L,T,rows,cells);
+			function defineAttr(x,y,rows,cells){
+				for(var i = 0; i < rows ; i++ ){
+					for(var j = 0;j< cells ;j++){
+						var ball = {
+							x: x + 2*j*(R + disRx),
+							y: y + 2*i*(R + disRy),
+							vx:0,
+							vy:20,
+							g:2,
+							r:parseInt(Math.random()*10 + 30),
+							time:parseInt(Math.random()*100 + 1000)
+						}
+						if(i>0){
+							ball.vy =0;
+						}
+						defineArr.push(ball);
+					}
+				}
+			}
+
+			
+			var timer = 0;
+			var timer2 = 0;
+			
+			getAll();
+			
+			function getAll(){
+				for(var i = 0;i < defineArr.length;i++){
+					(function (index) {
+					    setTimeout(function(){
+					    	small(index,cxt);
+					    },50*(index+1));
+					})(i)
+				}
+			}	
+			function small(num,cxt){
+				var zoom = 4;
+				var num2 = 0;
+				var disRr = R - defineArr[num].r;
+				clearInterval(defineArr[num].timer2);
+				defineArr[num].timer2 = setInterval(function(){
+					num2 += zoom;
+					if(num2 > (disRr + 10)){
+						zoom = -zoom;
+					}
+					if(num2 < disRr && zoom == -4){
+			    		clearInterval(defineArr[num].timer2);
+			    	}
+					fn(cxt,defineArr[num].x,defineArr[num].y,defineArr[num].r,num2);
+				},50);
+			}
+			
+			
+			function fn (cxt,x,y,r,num) {
+//				cxt.clearRect(x - R, y - R, x + R, y + R);
+				clearArc(x,y,r);
+			    cxt.save();
+//			    cxt.translate(x,y);
+			    cxt.fillStyle = 'red';
+			    cxt.beginPath();
+//			    cxt.scale(num/100, num/100);
+				r = r + num;
+			    cxt.arc(x,y,r,0,2*Math.PI);
+			    cxt.fill();
+			    cxt.restore();
+			}
+			
+			
+			function clearArc(x,y,radius){//圆心(x,y)，半径radius  
+                var calcWidth=radius-stepClear;  
+                var calcHeight=Math.sqrt(radius*radius-calcWidth*calcWidth);  
+                  
+                var posX=x-calcWidth;  
+                var posY=y-calcHeight;  
+                  
+                var widthX=2*calcWidth;  
+                var heightY=2*calcHeight;  
+                  
+                if(stepClear<=radius){  
+                    cxt.clearRect(posX,posY,widthX,heightY);  
+                    stepClear+=1;  
+                    clearArc(x,y,radius);  
+                }  
+            }  
+            var stepClear=1;//别忘记这一步  
+//          clearArc(210,230,50);
+
+			function backOut(t, b, c, d, s){
+				if (typeof s == 'undefined') {
+					s = 2.70158;  //回缩的距离
+				}
+				return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+			}
+			
+			function mTween(el,target,time,fn) {
+				var t = 0;
+				var b = r; 
+				var c = R - r; 
+				var d = time/20; 
+				clearInterval(el.timer);
+				el.timer = setInterval(function(){
+					t++;
+					if(t > d) { 
+						clearInterval(el.timer); 
+					} else {
+						var val = backOut(t,b,c,d);
+						fn();
+					}
+				},20);
+			}
+		</script>
+	</body>
+</html>
